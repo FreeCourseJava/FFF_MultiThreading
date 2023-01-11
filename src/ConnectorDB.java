@@ -33,7 +33,7 @@ public class ConnectorDB {
     }
 
     public void getConnection() {
-        connection = connection2;
+        connection =  connection2;
         System.out.println("Подключение к базе восстановлено");
     }
 

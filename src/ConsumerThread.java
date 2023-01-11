@@ -30,7 +30,7 @@ public class ConsumerThread implements Runnable {
                     connectorDB.getConnection();
                     connectorDB.put(value);
                 } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
+                    throw new  RuntimeException(ex);
                 }
             }
         }
