@@ -40,7 +40,7 @@ public class ConnectorDB {
             ResultSet result = prepStat.executeQuery();
             do {
                 result.next();
-                System.out.println(result.getString(2));
+                System.out.println(result.getString("timestamp"));
             } while (!result.isLast());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -59,6 +59,7 @@ public class ConnectorDB {
 
     public void closeConnection() {
         try {
+            prepStat.close();
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);

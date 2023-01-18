@@ -1,6 +1,5 @@
 package org.fff.multithreading;
 
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 public class ConsumerThread implements Runnable {
@@ -15,29 +14,29 @@ public class ConsumerThread implements Runnable {
 
     @Override
     public void run() {
-        Random random = new Random();
         for (int i = 0; ; i++) {
             String value = "";
-            if (random.nextInt(2) == 0) {
-                try {
-                    value = blockingQueue.take();
-                    connectorDB.put(value);
-                    System.out.println("Разместил в БД значение " + i);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-
-                }
-            } else {
+            try {
+                value = blockingQueue.take();
+                connectorDB.put(value);
+                System.out.println("Разместил в БД значение " + i);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (RuntimeException e) {
                 System.out.println("База данных отвалилась! Попытка подключения через 5 секунд");
+                i--;
                 try {
                     Thread.sleep(5000);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException e2) {
                     throw new RuntimeException(e);
                 }
             }
+
         }
 
     }
 
 }
+
+
 
