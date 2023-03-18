@@ -1,4 +1,4 @@
-package src;
+package org.fff.multithreading;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -14,26 +14,29 @@ public class ConsumerThread implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; ; i++) {
             String value = "";
-            if (i == 5) {
-                connectorDB.loseConnection();
-            }
             try {
                 value = blockingQueue.take();
                 connectorDB.put(value);
+                System.out.println("Разместил в БД значение " + i);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (RuntimeException e) {
+                System.out.println("База данных отвалилась! Попытка подключения через 5 секунд");
+                i--;
                 try {
                     Thread.sleep(5000);
-                    connectorDB.getConnection();
-                    connectorDB.put(value);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
+                } catch (InterruptedException e2) {
+                    throw new RuntimeException(e);
                 }
             }
+
         }
+
     }
+
 }
+
+
 
